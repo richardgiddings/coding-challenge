@@ -141,6 +141,14 @@ def create_tree(employee_dict: dict):
     Returns:
         A list representing a route if there is one and an empty
         list otherwise
+
+    Notes:
+        The reason for not having check_if_above as part of find_lca_route is we may end 
+        up finding an employee but not necessarily the one we were expecting. For example 
+        using our example chart if "Gonzo the Great" was actually "Invisible Woman" then 
+        we would have two people named "Invisible Woman" at depth 2. The depth finder might  
+        find the new one but then finding a route from "Super Ted" to "Invisible Woman" 
+        would find the other one. Not necessarily a problem just slightly misleading.
 """
 def check_if_above(lowest_node: Employee, highest_node: Employee, reverse: bool):
 
