@@ -252,30 +252,23 @@ def find_shortest_route(root: Employee, employee_name_1: str, employee_name_2: s
 
         # is employee_1 above employee_2?
         route = check_if_above(employee_2, employee_1, True)
-        if route:
-            return ' -> '.join(route)
-
-        # else they are on different sides of the root node so find LCA route
-        route = find_lca_route(employee_2, employee_2_depth, employee_1, employee_1_depth, employee_2)
-        if route:
-            return ' -> '.join(route)
+        if not route:
+            # else find route via LCA
+            route = find_lca_route(employee_2, employee_2_depth, employee_1, employee_1_depth, employee_2)
 
     elif employee_1_depth > employee_2_depth:
 
         # is employee_2 above employee_1?
         route = check_if_above(employee_1, employee_2, False)
-        if route:
-            return ' -> '.join(route)
-
-        # else they are on different sides of the root node so find LCA route
-        route = find_lca_route(employee_1, employee_1_depth, employee_2, employee_2_depth, employee_2)
-        if route:
-            return ' -> '.join(route)
+        if not route:
+            # else find route via LCA
+            route = find_lca_route(employee_1, employee_1_depth, employee_2, employee_2_depth, employee_2)
     else:
         # assume we are not allowing a route from an employee to themselves
         route = find_lca_route(employee_1, employee_1_depth, employee_2, employee_2_depth, employee_2)
-        if route:
-            return ' -> '.join(route)
+    
+    if route:
+        return ' -> '.join(route)
 
     return "No route"
 
