@@ -106,7 +106,7 @@ def read_file_into_dict(filename: str):
         the dictionary employee_dict
     
     Argmements:
-        Dictionary of employee objects
+        employee_dict - dictionary of employee objects
 
     Returns:
         The root of the tree created
