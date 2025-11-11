@@ -17,8 +17,8 @@ class TestCases(unittest.TestCase):
         self.assertEqual(result, '"Spiderman" is not an employee')
 
     def test_second_employee_not_in_chart(self):
-        result = run_program('superheroes.txt', 'The Flash', 'Batman')
-        self.assertEqual(result, '"The Flash" is not an employee')
+        result = run_program('superheroes.txt', 'Batman', 'The Flash')
+        self.assertEqual(result, '"The Flash" is not an employee or there is only one with this name')
 
     # main cases
     def test_batman_to_catwoman(self):
