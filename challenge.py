@@ -46,10 +46,11 @@ def compare_names(name_one: str, name_two: str):
         Get the depth of an Employee in the tree
 
     Arguemnts:
-        node        - the root of the tree
-        target_name - the employee we want the depth of
-        depth:      - the current depth
-        found       - a list containing depth of employee and its Employee object
+        node           - the root of the tree
+        target_name    - the employee we want the depth of
+        depth:         - the current depth
+        found          - a list containing depth of employee and its Employee object
+        other_employee - don't want to find the same employee twice when traversing
 
     Returns:
         None (note that 'found' returned by reference)
