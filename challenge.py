@@ -51,6 +51,7 @@ def compare_names(name_one: str, name_two: str):
         depth:         - the current depth
         found          - a list containing depth of employee and its Employee object
         other_employee - don't want to find the same employee twice when traversing
+                         if there are two employees with the same name
 
     Returns:
         None (note that 'found' returned by reference)
@@ -71,7 +72,7 @@ def employee_depth(node: Employee, target_name: str, depth: int, found: list, ot
 """
     Purpose:
         Taking command line arguments "args" construct a dictionary 
-        read the file into a dixtionary of Employee objects
+        read the file into a dictionary of Employee objects
     
     Arguments:
         filename - the input file
