@@ -20,6 +20,10 @@ class TestCases(unittest.TestCase):
         result = run_program('superheroes.txt', 'Batman', 'The Flash')
         self.assertEqual(result, '"The Flash" is not an employee or there is only one with this name')
 
+    def test_gonzo_the_great_invalid_variation(self):
+        result = run_program('superheroes.txt', 'Gon Zot Heg Reat', 'Batman')
+        self.assertEqual(result, '"Gon Zot Heg Reat" is not an employee')
+
     # main cases
     def test_batman_to_catwoman(self):
         result = run_program('superheroes.txt', 'Batman', 'Catwoman')
