@@ -186,7 +186,7 @@ def find_lca_route(
         route_end_node: Employee
     ):
 
-    # get to same depth
+    # get to same depth as the highest node on the lowest node side
     difference = lowest_node_depth - highest_node_depth
     count = 0
     current_1 = lowest_node
