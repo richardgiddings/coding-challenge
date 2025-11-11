@@ -39,5 +39,5 @@ run_program
 
 ## Assumptions
 
-- If we specify the same name twice we expect there to be two employees and not just print a route to the same person
+- If we specify the same name twice at the command line we expect there to be two employees and not just print a route to the same person
 - Taking "There may be gaps in the sequence (where people have left the company)." to mean gaps in Employee IDs and not disconnected charts
