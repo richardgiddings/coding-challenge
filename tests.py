@@ -10,7 +10,11 @@ class TestCases(unittest.TestCase):
 
     def test_batman_to_batman_two_batmans(self):
         result = run_program('superheroes_two_batmans.txt', 'Batman', 'Batman')
-        self.assertEqual(result, 'Batman (16) -> Black Widow (6) -> Gonzo the Great (2) -> Dangermouse (1) -> Batman (3)')
+        self.assertEqual(result, 'Batman (16) -> Black Widow (6) -> Gonzo the great (2) -> Dangermouse (1) -> Batman (3)')
+
+    def test_different_case_in_chart(self):
+        result = run_program('superheroes_two_batmans.txt', 'Batman', 'Gonzo the Great')
+        self.assertEqual(result, 'Batman (16) -> Black Widow (6) -> Gonzo the great (2)')
 
     def test_first_employee_not_in_chart(self):
         result = run_program('superheroes.txt', 'Spiderman', 'Batman')
@@ -23,6 +27,10 @@ class TestCases(unittest.TestCase):
     def test_gonzo_the_great_invalid_variation(self):
         result = run_program('superheroes.txt', 'Gon Zot Heg Reat', 'Batman')
         self.assertEqual(result, '"Gon Zot Heg Reat" is not an employee')
+
+    def test_batman_to_inivisble_woman_case_change(self):
+        result = run_program('superheroes.txt', 'batman', 'invisible Woman')
+        self.assertEqual(result, 'Batman (16) -> Black Widow (6) -> Gonzo the Great (2) -> Dangermouse (1) -> Invisible Woman (3)')
 
     # main cases
     def test_batman_to_catwoman(self):

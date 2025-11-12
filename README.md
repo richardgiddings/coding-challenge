@@ -31,13 +31,11 @@ run_program
 	find_shortest_route
 		employee_depth
 			compare_names
-		check_if_above
-			compare_names
 		find_lca_route
-			compare_names
 ```
 
 ## Assumptions
 
+- Employee id is unique
 - If we specify the same name twice at the command line we expect there to be two employees and not just print a route to the same person
 - Taking "There may be gaps in the sequence (where people have left the company)." to mean gaps in Employee IDs and not disconnected charts

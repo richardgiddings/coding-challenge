@@ -3,7 +3,7 @@ import sys
 
 
 """
-A class representing an Employee
+    A class representing an Employee
 """
 class Employee:
 
@@ -71,8 +71,8 @@ def employee_depth(node: Employee, target_name: str, depth: int, found: list, ot
 
 """
     Purpose:
-        Taking command line arguments "args" construct a dictionary 
-        read the file into a dictionary of Employee objects
+        Taking the command line arguments read the file
+        into a dictionary of Employee objects
     
     Arguments:
         filename - the input file
@@ -130,43 +130,6 @@ def create_tree(employee_dict: dict):
 
 """
     Purpose:
-        When finding a route between two employees this function
-        checks if we can just go up from the 'lowest_node' to the
-        'highest_node' without going down any branches.
-
-    Arguments:
-        lowest_node  - employee lower in hierarchy
-        highest_node - employee higher in hierarchy
-        reverse      - if the lowest node is the end of the route then reverse the route
-
-    Returns:
-        A list representing a route if there is one and an empty
-        list otherwise
-
-    Notes:
-        The reason for not having check_if_above as part of find_lca_route is we may end 
-        up finding an employee but not necessarily the one we were expecting. For example 
-        using our example chart if "Gonzo the Great" was actually "Invisible Woman" then 
-        we would have two people named "Invisible Woman" at depth 2. The depth finder might  
-        find the new one but then finding a route from "Super Ted" to "Invisible Woman" 
-        would find the other one. Not necessarily a problem just slightly misleading.
-"""
-def check_if_above(lowest_node: Employee, highest_node: Employee, reverse: bool):
-
-    route = [f'{lowest_node.employee_name} ({lowest_node.employee_id})']
-    current = lowest_node.manager
-    while current is not None:
-        route.append(f'{current.employee_name} ({current.employee_id})')
-        if compare_names(current.employee_name, highest_node.employee_name):
-            if reverse:
-                route.reverse()
-            return route
-        current = current.manager
-    return []
-
-
-"""
-    Purpose:
         Find the route using the Least Common Ancestor, i.e. the first
         manager in common traversing the tree upwards
 
@@ -196,17 +159,24 @@ def find_lca_route(
         route_1.append(f'{current_1.employee_name} ({current_1.employee_id})')
         count += 1
 
+    # we are at the same level searching up the tree so if the employees are the
+    # same then we don't have to go down at all to find the route
+    if current_1.employee_id == highest_node.employee_id:
+        if route_1[0] == f'{route_end_node.employee_name} ({route_end_node.employee_id})':
+            route_1.reverse()
+        return route_1
+
     # find the route on both sides to LCA by repeatedly moving one level up
     current_2 = highest_node
     route_2 = [f'{current_2.employee_name} ({current_2.employee_id})']
-    if compare_names(current_1.manager.employee_name, current_2.manager.employee_name):
+    if current_1.manager.employee_id == current_2.manager.employee_id:
         route_1.append(f'{current_1.manager.employee_name} ({current_1.manager.employee_id})')
     else:
         current_1 = current_1.manager
         current_2 = current_2.manager
         while current_1 is not None:
 
-            if compare_names(current_1.employee_name, current_2.employee_name):
+            if current_1.employee_id == current_2.employee_id:
                 route_1.append(f'{current_1.employee_name} ({current_1.employee_id})')
                 break
             else:
@@ -240,6 +210,7 @@ def find_lca_route(
 
     Returns:
         The chain of employees from employee_name_1 to employee_name_2
+        as a string
 """
 def find_shortest_route(root: Employee, employee_name_1: str, employee_name_2: str):
 
@@ -258,22 +229,10 @@ def find_shortest_route(root: Employee, employee_name_1: str, employee_name_2: s
 
     # now get the route
     if employee_2_depth > employee_1_depth:
-
-        # is employee_1 above employee_2?
-        route = check_if_above(employee_2, employee_1, True)
-        if not route:
-            # else find route via LCA
-            route = find_lca_route(employee_2, employee_2_depth, employee_1, employee_1_depth, employee_2)
-
-    elif employee_1_depth > employee_2_depth:
-
-        # is employee_2 above employee_1?
-        route = check_if_above(employee_1, employee_2, False)
-        if not route:
-            # else find route via LCA
-            route = find_lca_route(employee_1, employee_1_depth, employee_2, employee_2_depth, employee_2)
+        route = find_lca_route(employee_2, employee_2_depth, employee_1, employee_1_depth, employee_2)
+    elif employee_2_depth < employee_1_depth:
+        route = find_lca_route(employee_1, employee_1_depth, employee_2, employee_2_depth, employee_2)
     else:
-        # assume we are not allowing a route from an employee to themselves
         route = find_lca_route(employee_1, employee_1_depth, employee_2, employee_2_depth, employee_2)
     
     if route:
