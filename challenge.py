@@ -47,26 +47,46 @@ def compare_names(name_one: str, name_two: str):
 
     Arguemnts:
         node           - the root of the tree
-        target_name    - the employee we want the depth of
+        target_id      - the employee we want the depth of
         depth:         - the current depth
         found          - a list containing depth of employee and its Employee object
-        other_employee - don't want to find the same employee twice when traversing
-                         if there are two employees with the same name
 
     Returns:
         None (note that 'found' returned by reference)
 """
-def employee_depth(node: Employee, target_name: str, depth: int, found: list, other_employee: Employee):
+def employee_depth(node: Employee, target_id: str, depth: int, found: list):
+
+    if node is None:
+        return
+    if node.employee_id == target_id:
+        found[0] = depth
+        found[1] = node
+    for employee in node.reports:
+        if not found[1]:
+            employee_depth(employee, target_id, depth+1, found)
+
+
+"""
+    Purpose:
+        Get all the Employees with a name of target_name
+
+    Arguemnts:
+        node           - the root of the tree
+        target_name    - the employee we want to find
+        occurrences:   - the ids of the employees we have found
+
+    Returns:
+        IDs returned in occurrences
+"""
+def id_occurrences(node: Employee, target_name: str, occurrences: list):
 
     if node is None:
         return
     if compare_names(node.employee_name, target_name):
-        if other_employee is None or node.employee_id != other_employee.employee_id:
-            found[0] = depth
-            found[1] = node
+        occurrences.append(node.employee_id)
     for employee in node.reports:
-        if found[0] == 0:
-            employee_depth(employee, target_name, depth+1, found, other_employee)
+        occurrences = id_occurrences(employee, target_name, occurrences)
+    return occurrences
 
 
 """
@@ -214,31 +234,51 @@ def find_lca_route(
 """
 def find_shortest_route(root: Employee, employee_name_1: str, employee_name_2: str):
 
-    # find the depth of each employee
-    found = [0, None]
-    employee_depth(root, employee_name_1, 1, found, None)
-    employee_1_depth, employee_1 = found
-    if found[0] == 0:
-        return f'"{employee_name_1}" is not an employee'
-    
-    found = [0, None] 
-    employee_depth(root, employee_name_2, 1, found, employee_1)
-    employee_2_depth, employee_2 = found
-    if found[0] == 0:
-        return f'"{employee_name_2}" is not an employee or there is only one with this name'
+    employee_1_id_occurrences = []
+    id_occurrences(root, employee_name_1, employee_1_id_occurrences)
+    if len(employee_1_id_occurrences) == 0:
+            return f'"{employee_name_1}" is not an employee'
 
-    # now get the route
-    if employee_2_depth > employee_1_depth:
-        route = find_lca_route(employee_2, employee_2_depth, employee_1, employee_1_depth, employee_2)
-    elif employee_2_depth < employee_1_depth:
-        route = find_lca_route(employee_1, employee_1_depth, employee_2, employee_2_depth, employee_2)
-    else:
-        route = find_lca_route(employee_1, employee_1_depth, employee_2, employee_2_depth, employee_2)
-    
-    if route:
-        return ' -> '.join(route)
+    employee_2_id_occurrences = []
+    id_occurrences(root, employee_name_2, employee_2_id_occurrences)
+    if len(employee_2_id_occurrences) == 0:
+            return f'"{employee_name_2}" is not an employee'
 
-    return "No route"
+    if compare_names(employee_name_1, employee_name_2):
+        if len(employee_1_id_occurrences) == 1:
+            return f'"{employee_name_1}" only occurs once in the chart'
+
+    chain = []
+    done_dictionary = {}
+    for employee_1_id in employee_1_id_occurrences:
+        for employee_2_id in employee_2_id_occurrences:
+
+            if employee_1_id == employee_2_id or employee_1_id in done_dictionary and employee_2_id in done_dictionary[employee_1_id]:
+                continue
+            
+            # find the depth of each employee
+            found = [0, None]
+            employee_depth(root, employee_1_id, 1, found)
+            employee_1_depth, employee_1 = found
+            
+            found = [0, None]
+            employee_depth(root, employee_2_id, 1, found)
+            employee_2_depth, employee_2 = found
+
+            done_dictionary.setdefault(employee_2_id, []).append(employee_1_id)
+
+            # now get the route
+            if employee_2_depth > employee_1_depth:
+                route = find_lca_route(employee_2, employee_2_depth, employee_1, employee_1_depth, employee_2)
+            elif employee_2_depth < employee_1_depth:
+                route = find_lca_route(employee_1, employee_1_depth, employee_2, employee_2_depth, employee_2)
+            else:
+                route = find_lca_route(employee_1, employee_1_depth, employee_2, employee_2_depth, employee_2)
+            
+            if route:
+                chain.append(' -> '.join(route))
+
+    return '\n'.join(chain)
 
 
 """
