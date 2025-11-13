@@ -161,7 +161,7 @@ def create_tree(employee_dict: dict):
         route_end_node      - the employee we are finding a path to
 
     Returns:
-        A list containing the route between the two employees
+        A string containing the route between the two employees
 """
 def find_lca_route(
         lowest_node: Employee, lowest_node_depth: int, 
@@ -182,9 +182,9 @@ def find_lca_route(
     # we are at the same level searching up the tree so if the employees are the
     # same then we don't have to go down at all to find the route
     if current_1.employee_id == highest_node.employee_id:
-        if route_1[0] == f'{route_end_node.employee_name} ({route_end_node.employee_id})':
-            route_1.reverse()
-        return route_1
+        #if route_1[0] == f'{route_end_node.employee_name} ({route_end_node.employee_id})':
+        #    route_1.reverse()
+        return ' -> '.join(route_1)
 
     # find the route on both sides to LCA by repeatedly moving one level up
     current_2 = highest_node
@@ -210,13 +210,13 @@ def find_lca_route(
     if route_1:
         if route_1[0] == f'{route_end_node.employee_name} ({route_end_node.employee_id})':
             route_1.reverse()
-            route = route_2 + route_1
+            route = ' -> '.join(route_2) + ' -> ' + ' <- '.join(route_1)
         else:
             route_2.reverse()
-            route = route_1 + route_2
+            route = ' -> '.join(route_1) + ' <- ' + ' <- '.join(route_2)
         return route
 
-    return []
+    return ""
 
 
 """
@@ -278,7 +278,7 @@ def find_shortest_route(root: Employee, employee_name_1: str, employee_name_2: s
                 route = find_lca_route(employee_1, employee_1_depth, employee_2, employee_2_depth, employee_2)
             
             if route:
-                chain.append(' -> '.join(route))
+                chain.append(route)
 
     return '\n'.join(chain)
 

@@ -7,26 +7,26 @@ class TestCases(unittest.TestCase):
     def test_batman_to_batman(self):
         result = run_program('superheroes.txt', 'Batman', 'Batman')
         self.assertEqual(result, '"Batman" only occurs once in the chart')
-    
+ 
     def test_batman_to_batman_two_batmans(self):
         result = run_program('superheroes_two_batmans.txt', 'Batman', 'Batman')
-        self.assertEqual(result, 'Batman (16) -> Black Widow (6) -> Gonzo the great (2) -> Dangermouse (1) -> Batman (3)')
+        self.assertEqual(result, 'Batman (16) -> Black Widow (6) -> Gonzo the great (2) -> Dangermouse (1) <- Batman (3)')
 
     def test_batman_to_batman_three_batmans(self):
         result = run_program('superheroes_three_batmans.txt', 'Batman', 'Batman')
-        self.assertEqual(result, 'Batman (1) -> Gonzo the great (2) -> Black Widow (6) -> Batman (16)\nBatman (1) -> Batman (3)\nBatman (16) -> Black Widow (6) -> Gonzo the great (2) -> Batman (1) -> Batman (3)')
+        self.assertEqual(result, 'Batman (16) -> Black Widow (6) -> Gonzo the great (2) -> Batman (1)\nBatman (3) -> Batman (1)\nBatman (16) -> Black Widow (6) -> Gonzo the great (2) -> Batman (1) <- Batman (3)')
 
     def test_hit_girl_to_batman_three_batmans(self):
         result = run_program('superheroes_three_batmans.txt', 'Hit Girl', 'Batman')
-        self.assertEqual(result, 'Hit Girl (12) -> Batman (3) -> Batman (1)\nHit Girl (12) -> Batman (3) -> Batman (1) -> Gonzo the great (2) -> Black Widow (6) -> Batman (16)\nHit Girl (12) -> Batman (3)')
+        self.assertEqual(result, 'Hit Girl (12) -> Batman (3) -> Batman (1)\nHit Girl (12) -> Batman (3) -> Batman (1) <- Gonzo the great (2) <- Black Widow (6) <- Batman (16)\nHit Girl (12) -> Batman (3)')
 
     def test_batman_to_hit_girl_three_batmans(self):
         result = run_program('superheroes_three_batmans.txt', 'Batman', 'Hit Girl')
-        self.assertEqual(result, 'Batman (1) -> Batman (3) -> Hit Girl (12)\nBatman (16) -> Black Widow (6) -> Gonzo the great (2) -> Batman (1) -> Batman (3) -> Hit Girl (12)\nBatman (3) -> Hit Girl (12)')
+        self.assertEqual(result, 'Hit Girl (12) -> Batman (3) -> Batman (1)\nBatman (16) -> Black Widow (6) -> Gonzo the great (2) -> Batman (1) <- Batman (3) <- Hit Girl (12)\nHit Girl (12) -> Batman (3)')
 
     def test_different_case_in_chart(self):
         result = run_program('superheroes_two_batmans.txt', 'Batman', 'Gonzo the Great')
-        self.assertEqual(result, 'Batman (16) -> Black Widow (6) -> Gonzo the great (2)\nBatman (3) -> Dangermouse (1) -> Gonzo the great (2)')
+        self.assertEqual(result, 'Batman (16) -> Black Widow (6) -> Gonzo the great (2)\nBatman (3) -> Dangermouse (1) <- Gonzo the great (2)')
 
     def test_first_employee_not_in_chart(self):
         result = run_program('superheroes.txt', 'Spiderman', 'Batman')
@@ -42,12 +42,12 @@ class TestCases(unittest.TestCase):
 
     def test_batman_to_inivisble_woman_case_change(self):
         result = run_program('superheroes.txt', 'batman', 'invisible Woman')
-        self.assertEqual(result, 'Batman (16) -> Black Widow (6) -> Gonzo the Great (2) -> Dangermouse (1) -> Invisible Woman (3)')
+        self.assertEqual(result, 'Batman (16) -> Black Widow (6) -> Gonzo the Great (2) -> Dangermouse (1) <- Invisible Woman (3)')
 
     # main cases
     def test_batman_to_catwoman(self):
         result = run_program('superheroes.txt', 'Batman', 'Catwoman')
-        self.assertEqual(result, 'Batman (16) -> Black Widow (6) -> Catwoman (17)')
+        self.assertEqual(result, 'Batman (16) -> Black Widow (6) <- Catwoman (17)')
 
     def test_batman_to_black_widow(self):
         result = run_program('superheroes.txt', 'Batman', 'Black Widow')
@@ -63,19 +63,19 @@ class TestCases(unittest.TestCase):
 
     def test_dangermouse_to_batman(self):
         result = run_program('superheroes.txt', 'Dangermouse', 'Batman')
-        self.assertEqual(result, 'Dangermouse (1) -> Gonzo the Great (2) -> Black Widow (6) -> Batman (16)')
+        self.assertEqual(result, 'Batman (16) -> Black Widow (6) -> Gonzo the Great (2) -> Dangermouse (1)')
 
     def test_dangermouse_to_hit_girl(self):
         result = run_program('superheroes.txt', 'Dangermouse', 'hit Girl')
-        self.assertEqual(result, 'Dangermouse (1) -> Invisible Woman (3) -> Hit Girl (12)')
+        self.assertEqual(result, 'Hit Girl (12) -> Invisible Woman (3) -> Dangermouse (1)')
 
     def test_batman_to_inivisble_woman(self):
         result = run_program('superheroes.txt', 'Batman', 'Invisible Woman')
-        self.assertEqual(result, 'Batman (16) -> Black Widow (6) -> Gonzo the Great (2) -> Dangermouse (1) -> Invisible Woman (3)')
+        self.assertEqual(result, 'Batman (16) -> Black Widow (6) -> Gonzo the Great (2) -> Dangermouse (1) <- Invisible Woman (3)')
 
     def test_batman_to_super_ted(self):
         result = run_program('superheroes.txt', 'Batman', 'Super Ted')
-        self.assertEqual(result, 'Batman (16) -> Black Widow (6) -> Gonzo the Great (2) -> Dangermouse (1) -> Invisible Woman (3) -> Super Ted (15)')
+        self.assertEqual(result, 'Batman (16) -> Black Widow (6) -> Gonzo the Great (2) -> Dangermouse (1) <- Invisible Woman (3) <- Super Ted (15)')
 
     def test_invisible_woman_to_dangermouse(self):
         result = run_program('superheroes.txt', 'Invisible Woman', 'Dangermouse')
@@ -83,7 +83,7 @@ class TestCases(unittest.TestCase):
 
     def test_invisible_woman_to_black_widow(self):
         result = run_program('superheroes.txt', 'Invisible Woman', 'Black Widow')
-        self.assertEqual(result, 'Invisible Woman (3) -> Dangermouse (1) -> Gonzo the Great (2) -> Black Widow (6)')
+        self.assertEqual(result, 'Invisible Woman (3) -> Dangermouse (1) <- Gonzo the Great (2) <- Black Widow (6)')
 
 if __name__ == '__main__':
     unittest.main()
