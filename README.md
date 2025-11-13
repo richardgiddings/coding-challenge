@@ -1,6 +1,6 @@
 # README
 
-A **Python** program to print the route between two employees in an organisation chart that has been read in from a file.
+A **Python** program to print the shortest route between two employees in an organisation chart that has been read in from a file.
 
 
 The program creates a tree of Employees and then traverses it to find the route. In doing so we use the Least Common Ancestor (LCA), that is by going up in the hierarchy from the two employees the first manager they have in common.
