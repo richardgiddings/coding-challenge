@@ -12,15 +12,15 @@ class TestCases(unittest.TestCase):
         result = run_program('superheroes_two_batmans.txt', 'Batman', 'Batman')
         self.assertEqual(result, 'Batman (16) -> Black Widow (6) -> Gonzo the great (2) -> Dangermouse (1) -> Batman (3)')
 
-    def test_batman_to_batmans_three_batmans(self):
+    def test_batman_to_batman_three_batmans(self):
         result = run_program('superheroes_three_batmans.txt', 'Batman', 'Batman')
         self.assertEqual(result, 'Batman (1) -> Gonzo the great (2) -> Black Widow (6) -> Batman (16)\nBatman (1) -> Batman (3)\nBatman (16) -> Black Widow (6) -> Gonzo the great (2) -> Batman (1) -> Batman (3)')
 
-    def test_hit_girl_to_three_batmans(self):
+    def test_hit_girl_to_batman_three_batmans(self):
         result = run_program('superheroes_three_batmans.txt', 'Hit Girl', 'Batman')
         self.assertEqual(result, 'Hit Girl (12) -> Batman (3) -> Batman (1)\nHit Girl (12) -> Batman (3) -> Batman (1) -> Gonzo the great (2) -> Black Widow (6) -> Batman (16)\nHit Girl (12) -> Batman (3)')
 
-    def test_three_batmans_to_hit_girl(self):
+    def test_batman_to_hit_girl_three_batmans(self):
         result = run_program('superheroes_three_batmans.txt', 'Batman', 'Hit Girl')
         self.assertEqual(result, 'Batman (1) -> Batman (3) -> Hit Girl (12)\nBatman (16) -> Black Widow (6) -> Gonzo the great (2) -> Batman (1) -> Batman (3) -> Hit Girl (12)\nBatman (3) -> Hit Girl (12)')
 
