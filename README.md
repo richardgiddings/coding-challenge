@@ -29,8 +29,10 @@ run_program
 	read_file_into_dict
 	create_tree
 	find_shortest_route
-		employee_depth
+		compare_names
+		id_occurrences
 			compare_names
+		employee_depth
 		find_lca_route
 ```
 

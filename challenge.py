@@ -253,6 +253,7 @@ def find_shortest_route(root: Employee, employee_name_1: str, employee_name_2: s
     for employee_1_id in employee_1_id_occurrences:
         for employee_2_id in employee_2_id_occurrences:
 
+            # don't want route to same person or route we have done
             if employee_1_id == employee_2_id or employee_1_id in done_dictionary and employee_2_id in done_dictionary[employee_1_id]:
                 continue
             
@@ -265,6 +266,7 @@ def find_shortest_route(root: Employee, employee_name_1: str, employee_name_2: s
             employee_depth(root, employee_2_id, 1, found)
             employee_2_depth, employee_2 = found
 
+            # make a note of this combination so we don't try the reverse
             done_dictionary.setdefault(employee_2_id, []).append(employee_1_id)
 
             # now get the route
